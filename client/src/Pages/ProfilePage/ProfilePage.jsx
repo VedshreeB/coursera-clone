@@ -77,7 +77,7 @@ export const ProfilePage = () => {
     (state) => state.auth.user.enrolled_courses,
   );
 
-  useDocumentTitle('Coursera | Profile');
+  useDocumentTitle('EduHub | Profile');
 
   return (
     <div>
