@@ -15,8 +15,8 @@ const init = {
   isLoading: false,
   isError: false,
   videos: [],
-  videoUrl:
-    'https://masai-course.s3.ap-south-1.amazonaws.com/lecture/5435/material/88bade49e98db8790df275fcebb37a13/zoom_0.mp4',
+  videoUrl:'',
+    // 'https://masai-course.s3.ap-south-1.amazonaws.com/lecture/5435/material/88bade49e98db8790df275fcebb37a13/zoom_0.mp4',
   courseName: '',
   videoTitle: 'title',
   videoId: '',

@@ -103,6 +103,9 @@ const Navbar = () => {
     setState({ ...state, [anchor]: open1 });
   };
 
+  const handleAdmin = () => {
+    history.push(`/admin/dashboard`);
+  };
   const handleClick = (category) => {
     history.push(`/browse/${category}`);
   };
@@ -137,180 +140,182 @@ const Navbar = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      {/* <MenuItem>
+      <Button color="inherit">FOR ENTERPRISE</Button>
+    </MenuItem>
+    <MenuItem>
+      <Button color="inherit">FOR STUDENTS</Button>
+    </MenuItem>
+    <MenuItem> */}
       <MenuItem>
-        <Button color="inherit">FOR ENTERPRISE</Button>
+        <Button type="button" color="inherit" onClick={handleAdmin}>FOR ADMIN</Button>
       </MenuItem>
-      <MenuItem>
-        <Button color="inherit">FOR STUDENTS</Button>
-      </MenuItem>
-      <MenuItem>
-        <Button type="button" color="inherit" onClick={handleOpen}>
-          Login
-        </Button>
-        <div>
-          <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            className={classes.modal}
-            open={open}
-            onClose={handleClose}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-              timeout: 500,
-            }}
-          >
-            <Fade in={open}>
-              <div className={classes.paper}>
-                <Container className={classes.modalCont}>
-                  <h2 style={{ marginBottom: '30px', letterSpacing: '1px' }}>
-                    Welcome back
-                  </h2>
-                  {isError && (
-                    <h6 className={classes.error}>Wrong Credentials</h6>
-                  )}
+      <Button type="button" color="inherit" onClick={handleOpen}>
+        Login
+      </Button>
+      <div>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          className={classes.modal}
+          open={open}
+          onClose={handleClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={open}>
+            <div className={classes.paper}>
+              <Container className={classes.modalCont}>
+                <h2 style={{ marginBottom: '30px', letterSpacing: '1px' }}>
+                  Welcome back
+                </h2>
+                {isError && (
+                  <h6 className={classes.error}>Wrong Credentials</h6>
+                )}
 
-                  <Box height="75%">
-                    <Grid container direction="column" spacing={1}>
-                      <Grid
-                        item
-                        container
-                        direction="column"
-                        spacing={1}
-                        alignItems="flex-start"
-                        lg={12}
-                      >
-                        <Grid item lg={12}>
-                          <strong className={classes.inputHead}>
-                            USERNAME
-                          </strong>
-                        </Grid>
-                        <Grid item lg={12} style={{ width: '400px' }}>
-                          <TextField
-                            variant="outlined"
-                            placeholder="username"
-                            fullWidth
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                          />
-                        </Grid>
+                <Box height="75%">
+                  <Grid container direction="column" spacing={1}>
+                    <Grid
+                      item
+                      container
+                      direction="column"
+                      spacing={1}
+                      alignItems="flex-start"
+                      lg={12}
+                    >
+                      <Grid item lg={12}>
+                        <strong className={classes.inputHead}>
+                          USERNAME
+                        </strong>
                       </Grid>
+                      <Grid item lg={12} style={{ width: '400px' }}>
+                        <TextField
+                          variant="outlined"
+                          placeholder="username"
+                          fullWidth
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
+                        />
+                      </Grid>
+                    </Grid>
 
-                      <Grid
-                        item
-                        container
-                        direction="column"
-                        spacing={1}
-                        alignItems="flex-start"
-                        lg={12}
-                      >
-                        <Grid item lg={12}>
-                          <strong className={classes.inputHead}>
-                            PASSWORD
-                          </strong>
-                        </Grid>
-                        <Grid item lg={12} style={{ width: '400px' }}>
-                          <TextField
-                            variant="outlined"
-                            placeholder="Enter your password"
-                            fullWidth
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            type="password"
-                            InputProps={{
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <IconButton>
-                                    <VisibilityIcon />
-                                  </IconButton>
-                                </InputAdornment>
-                              ),
-                            }}
-                          />
-                          <Grid item>
-                            <p className={classes.fgtPass}>
-                              Forgot your password?
-                            </p>
-                          </Grid>
+                    <Grid
+                      item
+                      container
+                      direction="column"
+                      spacing={1}
+                      alignItems="flex-start"
+                      lg={12}
+                    >
+                      <Grid item lg={12}>
+                        <strong className={classes.inputHead}>
+                          PASSWORD
+                        </strong>
+                      </Grid>
+                      <Grid item lg={12} style={{ width: '400px' }}>
+                        <TextField
+                          variant="outlined"
+                          placeholder="Enter your password"
+                          fullWidth
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          type="password"
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton>
+                                  <VisibilityIcon />
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                        <Grid item>
+                          <p className={classes.fgtPass}>
+                            Forgot your password?
+                          </p>
                         </Grid>
                       </Grid>
                     </Grid>
-                    <div className={classes.loginDiv}>
-                      <Button
-                        variant="contained"
-                        style={{
-                          width: '100%',
-                          background: '#0056D2',
-                          color: 'white',
-                        }}
-                        size="large"
-                        onClick={handleLogin}
-                      >
-                        Login
-                      </Button>
-                    </div>
-                    <Divider style={{ marginTop: '22px' }} />
-
-                    <div className={classes.loginDiv}>
-                      <Button
-                        variant="outlined"
-                        style={{
-                          width: '100%',
-                        }}
-                        size="large"
-                        startIcon={google}
-                      >
-                        <strong>
-                          {' '}
-                          Continue with Google&nbsp;&nbsp;&nbsp;&nbsp;
-                        </strong>
-                      </Button>
-                    </div>
-                    <div className={classes.loginDiv}>
-                      <Button
-                        variant="outlined"
-                        style={{
-                          width: '100%',
-                        }}
-                        size="large"
-                        startIcon={<FacebookIcon />}
-                      >
-                        <strong> Continue with Facebook</strong>
-                      </Button>
-                    </div>
-                    <div className={classes.loginDiv}>
-                      <Button
-                        variant="outlined"
-                        style={{
-                          width: '100%',
-                        }}
-                        size="large"
-                        startIcon={<AppleIcon />}
-                      >
-                        <strong>
-                          Continue with Apple
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        </strong>
-                      </Button>
-                    </div>
-                    <Container
+                  </Grid>
+                  <div className={classes.loginDiv}>
+                    <Button
+                      variant="contained"
                       style={{
-                        color: '#706f6c',
-                        fontSize: '17px',
-                        marginTop: '15px',
+                        width: '100%',
+                        background: '#0056D2',
+                        color: 'white',
                       }}
+                      size="large"
+                      onClick={handleLogin}
                     >
-                      New to Coursera?&nbsp;
-                      <span style={{ color: '#0056D2' }}>Sign Up</span>
-                    </Container>
-                  </Box>
-                </Container>
-                <Divider />
-              </div>
-            </Fade>
-          </Modal>
-        </div>
-      </MenuItem>
+                      Login
+                    </Button>
+                  </div>
+                  <Divider style={{ marginTop: '22px' }} />
+
+                  <div className={classes.loginDiv}>
+                    <Button
+                      variant="outlined"
+                      style={{
+                        width: '100%',
+                      }}
+                      size="large"
+                      startIcon={google}
+                    >
+                      <strong>
+                        {' '}
+                        Continue with Google&nbsp;&nbsp;&nbsp;&nbsp;
+                      </strong>
+                    </Button>
+                  </div>
+                  <div className={classes.loginDiv}>
+                    <Button
+                      variant="outlined"
+                      style={{
+                        width: '100%',
+                      }}
+                      size="large"
+                      startIcon={<FacebookIcon />}
+                    >
+                      <strong> Continue with Facebook</strong>
+                    </Button>
+                  </div>
+                  <div className={classes.loginDiv}>
+                    <Button
+                      variant="outlined"
+                      style={{
+                        width: '100%',
+                      }}
+                      size="large"
+                      startIcon={<AppleIcon />}
+                    >
+                      <strong>
+                        Continue with Apple
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      </strong>
+                    </Button>
+                  </div>
+                  <Container
+                    style={{
+                      color: '#706f6c',
+                      fontSize: '17px',
+                      marginTop: '15px',
+                    }}
+                  >
+                    New to Coursera?&nbsp;
+                    <span style={{ color: '#0056D2' }}>Sign Up</span>
+                  </Container>
+                </Box>
+              </Container>
+              <Divider />
+            </div>
+          </Fade>
+        </Modal>
+      </div>
       <MenuItem>
         <Button>Join For Free</Button>
       </MenuItem>
@@ -385,7 +390,7 @@ const Navbar = () => {
             visibility="visible"
           >
             <Link to="/">
-              <img src="/logo.svg" width="120" alt="logo" />
+              <img src="../../../eduhub.jpg" width="120" alt="logo" />
             </Link>
           </Box>
 
@@ -427,8 +432,8 @@ const Navbar = () => {
           </Hidden>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Button>FOR ENTERPRISE</Button>
-            <Button color="inherit">FOR STUDENTS</Button>
+
+            <Button color="inherit" onClick={handleAdmin}>FOR ADMIN</Button>
             {!isAuth && (
               <Button type="button" color="inherit" onClick={handleOpen}>
                 Login

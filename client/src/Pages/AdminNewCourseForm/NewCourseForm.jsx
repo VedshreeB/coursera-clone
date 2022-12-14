@@ -16,10 +16,11 @@ import { useDispatch } from 'react-redux';
 import useStyles from './styles';
 import { categories, levels, obj } from './SelectTagValues';
 import { addCourse } from '../../Redux/Admin/Course/actions';
-import fileUpload from '../../CustomHooks/fileUpload';
 import { storage } from '../../utils/firebase';
 
 export const NewCourseForm = () => {
+  
+
   const classes = useStyles();
   const [formdata, setFormdata] = useState(obj);
   const [file, setFile] = useState(null);
@@ -34,11 +35,13 @@ export const NewCourseForm = () => {
 
   const handleSubmit = async () => {
     // Create a storage reference from our storage service
+    console.log("hii 1");
     const storageRef = storage.ref();
     // Create a child reference
     const id = uuid();
     const imagesRef = storageRef.child(`images/${id}`);
     // imagesRef now points to 'images'
+    console.log("hhi 2")
     const uploadTask = imagesRef.put(file);
     uploadTask.on(
       'state_changed',
@@ -85,16 +88,22 @@ export const NewCourseForm = () => {
                       course_img: courseUrl,
                       author_img: authorUrl,
                     }),
-                  ).then(() => alert('Course Added'));
+                  ).then(() => {
+                    alert('Course Added');
+                    setFormdata(obj);
+                  }
+                  );
                 });
             },
           );
         });
       },
     );
+    
   };
 
   const handleFileSelect = (e) => {
+    console.log("hii =>", e.target.files[0]);
     const img = e.target.files[0];
     setFile(img);
   };

@@ -51,7 +51,7 @@ const CategoryCoursesPage = () => {
   const { category } = useParams();
   const history = useHistory();
 
-  useDocumentTitle(`Coursera | Browse`);
+  useDocumentTitle(`EduHub | Browse`);
 
   console.log(courses);
   React.useEffect(() => {

@@ -3,12 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
-import { TextField, Container, Button, Modal, Grid } from '@material-ui/core';
+import { TextField,Container,Button,Modal,Grid,Input,CircularProgress} from '@material-ui/core';
+import { v4 as uuid } from 'uuid';
+
 import styled from 'styled-components';
 import { fetchAllVideosParticularCourse } from '../../Redux/Admin/Course/actions';
 import { addVideoToCourse } from '../../Redux/Admin/Video/actions';
 import VideoComponent from './VideoComponent';
 import useStyles from './coursePageStyles';
+import { storage } from '../../utils/firebase';
 
 const ModalCont = styled.div`
   background-color: azure;
@@ -36,12 +39,12 @@ const FormBox = styled.div`
 `;
 
 const AdminCoursePage = () => {
+  const [progress,setProgress] = useState(0);
   const params = useParams();
   const [courseId, setCourseId] = useState('');
   const classes = useStyles();
-
+  const [file, setFile] = useState(null);
   const [courseTitle, setCourseTitle] = useState('');
-
   const videos = useSelector((state) => state.course.videos);
   const [videoIds, setVideoIds] = useState([]);
 
@@ -51,7 +54,7 @@ const AdminCoursePage = () => {
     video_url: '',
     description: '',
     week: '',
-  };
+  }
   const [newVideoData, setNewVideoData] = useState(initialVideoData);
 
   const [open, setOpen] = React.useState(false);
@@ -65,38 +68,85 @@ const AdminCoursePage = () => {
     });
   };
 
-  const fetchVideoIdsArray = () => {
-    return axios
-      .get(`http://localhost:5000/course/${courseId}/videoids`)
-      .then(({ data }) => {
-        setVideoIds(data.data.video_ids);
-      });
+  const fetchVideoIdsArray = async () => {
+    const { data } = await axios
+      .get(`http://localhost:5000/course/${courseId}/videoids`);
+    setVideoIds(data.data.video_ids);
   };
 
-  const handleAddVideo = () => {
-    const payload = {
-      ...newVideoData,
-      week: Number(newVideoData.week),
-      course_id: courseId,
-    };
-    dispatch(addVideoToCourse(payload))
-      .then((res) => {
-        alert('Video Added Successfully');
-        const newVideoId = res.data.data._id;
-        // setVideoIds([...videoIds, newVideoId]);
-        videoIds.push(newVideoId);
-      })
-      .then(() => {
-        axios
-          .patch(`http://localhost:5000/course/${courseId}`, {
-            video_ids: videoIds,
-          })
-          .then(() => fetchVideoIdsArray())
-          .catch((err) => console.error(err));
+  const handleVideoUpload = (e) => {
+    console.log("hii =>", e.target.files[0]);
+    const img = e.target.files[0];
+    setFile(img);
+  }
 
-        dispatch(fetchAllVideosParticularCourse(courseId));
-      });
-  };
+  const handleAddVideo = async () => {
+    // Create a storage reference from our storage service
+
+    const storageRef = storage.ref();
+    // Create a child reference
+    const id = uuid();
+    const videoRef = storageRef.child(`videos/${id}`);
+    // imagesRef now points to 'images'
+
+    const uploadTask = videoRef.put(file);
+    uploadTask.on(
+
+      'state_changed',
+      (snapshot) => {
+        setProgress(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        // eslint-disable-next-line prefer-template
+        console.log('Upload is ' + progress + '% done');
+
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+        console.log(error);
+      },
+
+      () => {
+        // Handle successful uploads on complete
+        uploadTask.snapshot.ref
+          .getDownloadURL()
+          .then((url) => {
+            /* console.log(url);
+            dispatch(
+              addVideo({
+                ...newVideoData,
+                video_url:url
+              }),
+            ).then(() => alert('Video Added')); */
+
+            const payload = {
+              ...newVideoData,
+              week: Number(newVideoData.week),
+              course_id: courseId,
+              video_url: url,
+            };
+            dispatch(addVideoToCourse(payload))
+              .then((res) => {
+                alert('Video Added Successfully to Course');
+                const newVideoId = res.data.data._id;
+                // setVideoIds([...videoIds, newVideoId]);
+                videoIds.push(newVideoId);
+              })
+              .then(() => {
+                axios
+                  .patch(`http://localhost:5000/course/${courseId}`, {
+                    video_ids: videoIds,
+                  })
+                  .then(() => fetchVideoIdsArray())
+                  .catch((err) => console.error(err));
+
+                dispatch(fetchAllVideosParticularCourse(courseId));
+              });
+          });
+      },
+    );
+
+
+  }
 
   const handleOpen = () => {
     setOpen(true);
@@ -167,6 +217,7 @@ const AdminCoursePage = () => {
         >
           <ModalCont>
             <h1>Modal</h1>
+
             <FormBox>
               <TextField
                 onChange={handleNewVideoFormChange}
@@ -174,18 +225,26 @@ const AdminCoursePage = () => {
                 variant="outlined"
                 name="title"
               />
+              <Input
+                type="file"
+                accept="video/mp4"
+                label="Video Upload"
+                variant="outlined"
+                required
+                onChange={handleVideoUpload}
+              />
               <TextField
                 onChange={handleNewVideoFormChange}
                 label="Video Description"
                 variant="outlined"
                 name="description"
               />
-              <TextField
-                onChange={handleNewVideoFormChange}
-                label="Video Url"
-                variant="outlined"
-                name="video_url"
-              />
+              {/* <TextField
+              onChange={handleNewVideoFormChange}
+              label="Video Url"
+              variant="outlined"
+              name="video_url"
+            /> */}
               <TextField
                 onChange={handleNewVideoFormChange}
                 label="Week Number"
@@ -195,12 +254,13 @@ const AdminCoursePage = () => {
               <Button variant="primary" onClick={handleAddVideo}>
                 <h2>Add Video to the Course</h2>
               </Button>
+              <CircularProgress variant="determinate" value={progress} />
             </FormBox>
           </ModalCont>
         </Modal>
       </div>
     </Container>
   );
-};
+}
 
 export default AdminCoursePage;

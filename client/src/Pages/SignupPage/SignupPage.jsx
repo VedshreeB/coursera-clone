@@ -48,9 +48,11 @@ const SignupPage = () => {
   const handleSignup = () => {
     axios
       .post('http://localhost:5000/user/signup', formdata)
-      .then((res) => console.log(res))
+      .then((res) =>{ console.log(res);
+        window.alert("User registered successfully");
+      })
       .catch((err) => console.error(err));
-
+    
     setFormdata(init);
   };
 

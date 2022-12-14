@@ -28,7 +28,7 @@ router.post("/login", async (req, res) => {
   }
   console.log(user);
 
-  console.log(await bcrypt.compare(password, user[0].password));
+  console.log("hii ", await bcrypt.compare(password,user[0].password));
   if (await bcrypt.compare(password, user[0].password)) {
     return res.status(200).json({ data: user, msg: "User Log-In" });
   } else {

@@ -6,13 +6,14 @@ import { HomeBanner } from '../../Shared-Components/Home/HomeBanner/HomeBanner';
 import CommunityReviewSection from '../../Shared-Components/Home/CommunityReviewSection/CommunityReviewSection';
 import {
   HomeCont1,
-  HomeCont2,
-  HomeCont3,
+  HomeCont2
 } from '../../Shared-Components/Home/HomeContainers';
+
 import useDocumentTitle from '../../CustomHooks/useDocumentTitle';
 
+
 const Home = () => {
-  useDocumentTitle(`Coursera`);
+  useDocumentTitle(`EduHub`);
 
   return (
     <div>
@@ -20,7 +21,6 @@ const Home = () => {
       <HomeBanner />
       <HomeCont1 />
       <HomeCont2 />
-      <HomeCont3 />
       <CommunityReviewSection />
       <Footer />
     </div>

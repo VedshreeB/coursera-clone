@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Filters(props) {
+export default function Filters() {
   const classes = useStyles();
   const [checked, setChecked] = React.useState([]);
   const handleChange = (name) => {
@@ -81,7 +81,9 @@ export default function Filters(props) {
     }
     setChecked(newChecked);
     // eslint-disable-next-line react/prop-types
-    props.handleFilter(newChecked);
+    /*
+    //props.handleFilter({newChecked}); 
+    */
   };
 
   return (

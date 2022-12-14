@@ -1,8 +1,9 @@
 import React from 'react';
-import { Container, Grid, Button, Hidden, Box } from '@material-ui/core';
+import { Container, Grid, Hidden, Box } from '@material-ui/core';
 import useStyles from './styles';
 
 export const HomeBanner = () => {
+ 
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -35,14 +36,9 @@ export const HomeBanner = () => {
                 <span className={classes.heroSpanSub}>experience.</span>
               </p>
             </Grid>
-            <Grid item style={{ marginLeft: '25px' }}>
-              <Button
-                variant="contained"
-                className={`${classes.heroBtn} ${classes.mediumHeroBtn}`}
-              >
-                Join For Free
-              </Button>
-            </Grid>
+            {/* <Grid item style={{ marginLeft: '25px' }}>
+              Join For Free
+            </Grid> */}
           </Grid>
           <Grid item container justify="flex-end" lg={6} md={6} sm={6}>
             <Hidden only="xs">
